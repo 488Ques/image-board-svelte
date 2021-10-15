@@ -18,8 +18,7 @@
             });
             localStorage.setItem("user", JSON.stringify($user));
             secret = "";
-        } catch (e) {
-            console.error(e);
+        } catch {
             alert("Login failed!");
         }
     }
