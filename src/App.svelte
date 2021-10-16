@@ -8,6 +8,7 @@
 <div class="flex flex-row space-x-4 m-1.5">
   <a href="#/" class="">Home</a>
   <a href="#/upload">Upload</a>
+  <a href="#/tag">Tag</a>
   <span>:|:</span>
   <UserAuth />
 </div>
