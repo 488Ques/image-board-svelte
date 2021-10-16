@@ -4,6 +4,8 @@
 
 <div class="flex flex-row flex-wrap justify-center">
     {#each snowflakes as snowflake}
-        <img src="/api/image/{snowflake}/preview" alt="" class="m-2"/>
+        <a href="#/image/{snowflake}"
+            ><img src="/api/image/{snowflake}/preview" alt="" class="m-2" /></a
+        >
     {/each}
 </div>
