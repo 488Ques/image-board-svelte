@@ -1,6 +1,9 @@
 <script>
+    import { push } from "svelte-spa-router";
+
     export let currentPage = 1;
     export let lastPage = 1;
+    $: queryPageNumber(currentPage);
 
     function pagePrompt() {
         try {
@@ -17,6 +20,9 @@
         } catch (error) {
             alert(error);
         }
+    }
+    function queryPageNumber(currentPage) {
+        push(`#/browse?p=${currentPage}`);
     }
 </script>
 
