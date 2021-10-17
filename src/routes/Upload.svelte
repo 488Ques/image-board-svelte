@@ -11,7 +11,6 @@
     function validImageTypes(file) {
         return acceptedTypes.includes(file.type);
     }
-
     function updatePreviews() {
         previews = [];
         for (const file of imageUpload.files) {
@@ -20,7 +19,6 @@
             }
         }
     }
-
     async function postImages() {
         let formData = new FormData();
         let i = 0;
@@ -36,7 +34,6 @@
         imageUpload.value = null;
         previews = [];
     }
-
     async function post1Image(formData) {
         const options = {
             method: "POST",
@@ -48,12 +45,10 @@
         const imageMetadata = await fetchAPI(paths.Image, options);
         return imageMetadata;
     }
-
     // Serialize image metada fields into JSON string that can be sent to API endpoints
     function serializeForm(form) {
         return JSON.stringify(Object.fromEntries(new FormData(form)));
     }
-
     function updateImageMetadata(snowflake, metadata) {
         const options = {
             method: "PATCH",
@@ -77,7 +72,6 @@
         />
         <button on:click={postImages}>Submit</button>
     </div>
-    <!-- {(console.log(forms), "")} -->
     {#each previews as preview, i}
         <div class="flex flex-row space-x-6 m-4">
             <form class="flex flex-col flex-1 space-y-6" bind:this={forms[i]}>
