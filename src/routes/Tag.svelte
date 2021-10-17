@@ -16,7 +16,7 @@
     let tagType = tagTypes[0];
     $: validTag = checkTag(tag);
     let searchTags = "";
-    let searchedSnowflakes = [];
+    let searchSnowflakes = [];
 
     function putTag() {
         const options = {
@@ -51,7 +51,7 @@
         return !tag.match(regex) || tag.length > 128;
     }
     async function searchImagesByTags() {
-        searchedSnowflakes =
+        searchSnowflakes =
             (await fetchAPI(paths.SearchField(parseSearchTags(searchTags)))) ||
             [];
     }
@@ -89,4 +89,4 @@
         <div>Delimit tags by space to search multiple</div>
     </div>
 </section>
-<ImageList snowflakes={searchedSnowflakes} />
+<ImageList snowflakes={searchSnowflakes} />
