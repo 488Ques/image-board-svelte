@@ -9,4 +9,8 @@ async function fetchAPI(endpoint, options) {
     }
 }
 
-export { fetchAPI };
+function getQueryValue(querystring, query) {
+    return new URLSearchParams(querystring).get(query)
+}
+
+export { fetchAPI, getQueryValue };

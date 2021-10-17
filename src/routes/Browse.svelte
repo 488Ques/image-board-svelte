@@ -1,7 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import { paths } from "@/static/js/paths";
-    import { fetchAPI } from "@/static/js/helper";
+    import { fetchAPI, getQueryValue } from "@/static/js/helper";
     import ImageList from "@/lib/ImageList.svelte";
     import PaginationBar from "@/lib/PaginationBar.svelte";
     import { querystring } from "svelte-spa-router";
@@ -10,7 +10,7 @@
     let currentPage;
     let lastPage;
     $: if ($querystring !== "")
-        currentPage = parseInt(new URLSearchParams($querystring).get("p"));
+        currentPage = parseInt(getQueryValue($querystring, "p"));
     $: getPageSnowflakes(currentPage - 1).then(
         (snowflakes) => (pageSnowflakes = snowflakes || [])
     );
