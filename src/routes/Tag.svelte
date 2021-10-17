@@ -1,8 +1,9 @@
 <script>
     import ImageList from "@/lib/ImageList.svelte";
-    import { fetchAPI } from "@/static/js/helper";
+    import { fetchAPI, getQueryValue } from "@/static/js/helper";
     import { paths } from "@/static/js/paths";
     import { user } from "@/stores";
+    import { push, querystring } from "svelte-spa-router";
 
     const tagTypes = [
         "artist",
@@ -16,7 +17,12 @@
     let tagType = tagTypes[0];
     $: validTag = checkTag(tag);
     let searchTags = "";
+    $: queryValue = getQueryValue($querystring, "search") || "";
     let searchSnowflakes = [];
+    $: if (queryValue.length > 0)
+        searchImagesByTags(queryValue).then(
+            (result) => (searchSnowflakes = result)
+        );
 
     function putTag() {
         const options = {
@@ -50,13 +56,17 @@
         const regex = /^[a-z0-9()_-]*$/g;
         return !tag.match(regex) || tag.length > 128;
     }
-    async function searchImagesByTags() {
-        searchSnowflakes =
+    async function searchImagesByTags(searchTags) {
+        return (
             (await fetchAPI(paths.SearchField(parseSearchTags(searchTags)))) ||
-            [];
+            []
+        );
     }
     function parseSearchTags(searchTags) {
         return searchTags.split(" ").join("!");
+    }
+    function pushSearchTags() {
+        push(`#/tag?search=${parseSearchTags(searchTags)}`);
     }
 </script>
 
@@ -84,7 +94,7 @@
         <button
             disabled={searchTags === ""}
             class="disabled:opacity-50"
-            on:click={searchImagesByTags}>Search</button
+            on:click={pushSearchTags}>Search</button
         >
         <div>Delimit tags by space to search multiple</div>
     </div>
