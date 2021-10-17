@@ -3,7 +3,7 @@
 
     export let currentPage = 1;
     export let lastPage = 1;
-    $: queryPageNumber(currentPage);
+    $: pushPageNumber(currentPage);
 
     function pagePrompt() {
         try {
@@ -21,7 +21,7 @@
             alert(error);
         }
     }
-    function queryPageNumber(currentPage) {
+    function pushPageNumber(currentPage) {
         push(`#/browse?p=${currentPage}`);
     }
 </script>
