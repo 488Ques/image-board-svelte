@@ -8,6 +8,7 @@
     let imageMetadata = {};
     let addTag = false;
     let tag = "";
+    let originalComment;
 
     async function getImageMetadata() {
         return await fetchAPI(paths.ImageField(params.snowflake));
@@ -25,6 +26,7 @@
 
     onMount(async () => {
         imageMetadata = await getImageMetadata();
+        originalComment = imageMetadata.commentary ? true : false;
     });
 </script>
 
@@ -44,5 +46,34 @@
             </div>
         {/if}
     </div>
+    <div class="min-w-full">
     <img src={paths.ImageFile(params.snowflake)} alt="" class="max-w-2xl" />
+        {#if imageMetadata.commentary || imageMetadata.commentary_translation}
+            <div class="bg-gray-200 p-4 m-4">
+                <div><strong>Artist's commentary</strong></div>
+                {#if imageMetadata.commentary}
+                    <button
+                        on:click={() => (originalComment = true)}
+                        class={originalComment ? "font-bold" : ""}
+                        >Original</button
+                    >
+                {/if}
+                {#if imageMetadata.commentary && imageMetadata.commentary_translation}
+                    <span class="mx-0.5">|</span>
+                {/if}
+                {#if imageMetadata.commentary_translation}
+                    <button
+                        on:click={() => (originalComment = false)}
+                        class={!originalComment ? "font-bold" : ""}
+                        >Translation</button
+                    >
+                {/if}
+                {#if originalComment}
+                    <div>{imageMetadata.commentary}</div>
+                {:else}
+                    <div>{imageMetadata.commentary_translation}</div>
+                {/if}
+            </div>
+        {/if}
+    </div>
 </div>
