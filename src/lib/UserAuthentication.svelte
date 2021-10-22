@@ -37,6 +37,9 @@
     <input type="text" class="border-2 border-gray-300" bind:value={secret} />
     <button on:click={login} class="hover:opacity-60">Login</button>
 {:else}
-    <span>Welcome, user <strong>{$user.username}</strong></span>
+    <span
+        >Welcome, user <a href="#/user" class="hover:opacity-50"><strong>{$user.username}</strong></a
+        ></span
+    >
     <button on:click={logout} class="hover:opacity-60">Logout</button>
 {/if}

@@ -3,6 +3,7 @@ import Upload from '@/routes/Upload.svelte';
 import ImagePost from '@/routes/ImagePost.svelte';
 import Tag from '@/routes/Tag.svelte';
 import Browse from '@/routes/Browse.svelte';
+import User from '@/routes/User.svelte';
 
 export default {
     '/': Home,
@@ -10,4 +11,5 @@ export default {
     '/image/:snowflake': ImagePost,
     '/tag': Tag,
     '/browse': Browse,
+    '/user': User,
 }
