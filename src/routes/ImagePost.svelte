@@ -2,18 +2,19 @@
     import { fetchAPI } from "@/static/js/helper";
     import { paths } from "@/static/js/paths";
     import { user } from "@/stores";
-    import { onMount } from "svelte";
 
     export let params = {};
     let imageMetadata = {};
     let addTag = false;
     let tag = "";
-    let originalComment;
     let form;
     let edit = false;
 
-    async function getImageMetadata() {
-        return await fetchAPI(paths.ImageField(params.snowflake));
+    $: getImageMetadata(params.snowflake);
+    $: originalComment = imageMetadata.commentary ? true : false;
+
+    async function getImageMetadata(snowflake) {
+        imageMetadata = await fetchAPI(paths.ImageField(snowflake));
     }
     function imageTagAdd() {
         const options = {
@@ -39,11 +40,6 @@
         };
         return fetchAPI(paths.ImageField(snowflake), options);
     }
-
-    onMount(async () => {
-        imageMetadata = await getImageMetadata();
-        originalComment = imageMetadata.commentary ? true : false;
-    });
 </script>
 
 <svelte:head>
@@ -108,14 +104,14 @@
             placeholder="Source"
             name="source"
             autocomplete="off"
-            bind:value={imageMetadata.source}
+            value={imageMetadata.source}
         />
         <input
             type="text"
             placeholder="Parent"
             name="parent"
             autocomplete="off"
-            bind:value={imageMetadata.parent}
+            value={imageMetadata.parent}
         />
         <textarea
             type="text"
@@ -123,7 +119,7 @@
             name="commentary"
             autocomplete="off"
             class="max-h-full resize-none flex-1"
-            bind:value={imageMetadata.commentary}
+            value={imageMetadata.commentary}
         />
         <textarea
             type="text"
@@ -131,14 +127,12 @@
             name="commentary_translation"
             autocomplete="off"
             class="max-h-full resize-none flex-1"
-            bind:value={imageMetadata.commentary_translation}
+            value={imageMetadata.commentary_translation}
         />
         <button
             on:click|preventDefault={() => {
-                updateImageMetadata(
-                    imageMetadata.snowflake,
-                    serializeForm(form)
-                );
+                updateImageMetadata(params.snowflake, serializeForm(form));
+                getImageMetadata(params.snowflake);
                 edit = false;
             }}>Submit</button
         >
