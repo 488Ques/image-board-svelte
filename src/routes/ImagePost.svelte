@@ -66,7 +66,7 @@
             </div>
         {/if}
     </div>
-    <div class="min-w-full">
+    <div class="w-full">
         <img src={paths.ImageFile(params.snowflake)} alt="" class="max-w-2xl" />
         {#if imageMetadata.commentary || imageMetadata.commentary_translation}
             <div class="bg-gray-200 p-4 m-4">
