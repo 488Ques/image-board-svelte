@@ -46,6 +46,10 @@
     });
 </script>
 
+<svelte:head>
+    <title>{params.snowflake}</title>
+</svelte:head>
+
 <div class="flex flex-row space-x-12">
     <div class="pl-2">
         <ul>

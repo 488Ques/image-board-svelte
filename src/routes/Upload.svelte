@@ -61,6 +61,10 @@
     }
 </script>
 
+<svelte:head>
+    <title>Upload</title>
+</svelte:head>
+
 <main class="flex flex-col items-center mx-auto max-w-4xl">
     <div>
         <input

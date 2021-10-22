@@ -70,6 +70,10 @@
     }
 </script>
 
+<svelte:head>
+    <title>Tag</title>
+</svelte:head>
+
 <section class="m-2 space-y-4">
     <div class="space-x-4">
         <input type="text" placeholder="Tag name" bind:value={tag} />

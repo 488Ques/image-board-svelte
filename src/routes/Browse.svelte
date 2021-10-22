@@ -27,6 +27,10 @@
     });
 </script>
 
+<svelte:head>
+    <title>Browse</title>
+</svelte:head>
+
 <PaginationBar bind:currentPage bind:lastPage />
 <ImageList snowflakes={pageSnowflakes} />
 <PaginationBar bind:currentPage bind:lastPage />
