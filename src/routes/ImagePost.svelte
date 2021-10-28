@@ -53,15 +53,17 @@
         fetchAPI(paths.ImageField(snowflake), options);
     }
     // Delete the image then reroute back to /browse?p=1
-    // I don't know why the fuck this works but just leave it here
     async function deleteImage(snowflake) {
         if (confirm("Delete image?")) {
             const options = {
                 method: "DELETE",
                 headers: { secret: $user.secret },
             };
-            fetchAPI(paths.ImageField(snowflake), options);
-            push("#/browse?p=1");
+            // .finally is to cope with fetchAPI resolving to error when
+            // an endpoint returns empty JSON
+            fetchAPI(paths.ImageField(snowflake), options).finally(() =>
+                push("#/browse?p=1")
+            );
         }
     }
 </script>
