@@ -3,6 +3,7 @@
     import { paths } from "@/static/js/paths";
     import { user } from "@/stores";
     import { push } from "svelte-spa-router";
+    import marked from "marked";
 
     export let params = {};
     let imageMetadata = {};
@@ -138,9 +139,9 @@
                     >
                 {/if}
                 {#if originalComment}
-                    <div>{imageMetadata.commentary}</div>
+                    <div>{@html marked(imageMetadata.commentary)}</div>
                 {:else}
-                    <div>{imageMetadata.commentary_translation}</div>
+                    <div>{@html marked(imageMetadata.commentary_translation)}</div>
                 {/if}
             </div>
         {/if}
