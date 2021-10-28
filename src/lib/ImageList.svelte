@@ -2,10 +2,10 @@
     export let snowflakes = [];
 </script>
 
-<div class="flex flex-row flex-wrap justify-center">
+<div class="grid grid-cols-7 gap-4 mx-8">
     {#each snowflakes as snowflake}
         <a href="#/image/{snowflake}"
-            ><img src="/api/image/{snowflake}/preview" alt="" class="m-2" /></a
+            ><img src="/api/image/{snowflake}/preview" alt="" class="mx-auto" /></a
         >
     {/each}
 </div>
