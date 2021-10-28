@@ -2,6 +2,7 @@
     import { fetchAPI } from "@/static/js/helper";
     import { paths } from "@/static/js/paths";
     import { user } from "@/stores";
+    import { push } from "svelte-spa-router";
 
     export let params = {};
     let imageMetadata = {};
@@ -51,6 +52,18 @@
         };
         fetchAPI(paths.ImageField(snowflake), options);
     }
+    // Delete the image then reroute back to /browse?p=1
+    // I don't know why the fuck this works but just leave it here
+    async function deleteImage(snowflake) {
+        if (confirm("Delete image?")) {
+            const options = {
+                method: "DELETE",
+                headers: { secret: $user.secret },
+            };
+            fetchAPI(paths.ImageField(snowflake), options);
+            push("#/browse?p=1");
+        }
+    }
 </script>
 
 <svelte:head>
@@ -58,6 +71,7 @@
 </svelte:head>
 
 <div class="flex flex-row space-x-12">
+    <!-- Image metatadata side -->
     <div class="pl-2">
         <ul>
             <li><strong>Snowflake: </strong> {imageMetadata.snowflake}</li>
@@ -68,6 +82,7 @@
             <li><strong>Image type: </strong> {imageMetadata.type}</li>
             <li><strong>Uploaded by: </strong> {imageMetadata.user}</li>
         </ul>
+        <!-- Actions -->
         <div><button on:click={() => (edit = !edit)}>Edit</button></div>
         <div><button on:click={() => (addTag = !addTag)}>Add tag</button></div>
         {#if addTag}
@@ -76,7 +91,16 @@
                 <button on:click={imageTagAdd}>Add</button>
             </div>
         {/if}
+        <div>
+            <button
+                on:click={() => {
+                    deleteImage(params.snowflake);
+                }}>Delete</button
+            >
+        </div>
     </div>
+    <!-- Image side -->
+    <!-- Image family -->
     <div class="w-full">
         <div class="flex flex-row flex-wrap m-4">
             {#each imageFamily as snowflake}
@@ -90,6 +114,7 @@
             {/each}
         </div>
         <img src={paths.ImageFile(params.snowflake)} alt="" class="max-w-2xl" />
+        <!-- Commentary -->
         {#if imageMetadata.commentary || imageMetadata.commentary_translation}
             <div class="bg-gray-200 p-4 m-4">
                 <div><strong>Artist's commentary</strong></div>
