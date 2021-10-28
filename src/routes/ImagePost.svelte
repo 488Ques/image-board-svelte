@@ -9,12 +9,23 @@
     let tag = "";
     let form;
     let edit = false;
+    let imageFamily = [];
 
-    $: getImageMetadata(params.snowflake);
     $: originalComment = imageMetadata.commentary ? true : false;
+    $: getImageMetadataHooks(params.snowflake);
 
+    // Update other stuff whenever image metadata changes
+    function getImageMetadataHooks(snowflake) {
+        getImageMetadata(snowflake)
+            .then((metadata) => {
+                return (imageMetadata = metadata);
+            })
+            .then((metadata) => {
+                imageFamily = [metadata.parent, metadata.child];
+            });
+    }
     async function getImageMetadata(snowflake) {
-        imageMetadata = await fetchAPI(paths.ImageField(snowflake));
+        return fetchAPI(paths.ImageField(snowflake));
     }
     function imageTagAdd() {
         const options = {
@@ -38,7 +49,7 @@
             },
             body: metadata,
         };
-        return fetchAPI(paths.ImageField(snowflake), options);
+        fetchAPI(paths.ImageField(snowflake), options);
     }
 </script>
 
@@ -67,6 +78,17 @@
         {/if}
     </div>
     <div class="w-full">
+        <div class="flex flex-row flex-wrap m-4">
+            {#each imageFamily as snowflake}
+                <a href="#/image/{snowflake}"
+                    ><img
+                        src="/api/image/{snowflake}/preview"
+                        alt=""
+                        class="mx-auto"
+                    /></a
+                >
+            {/each}
+        </div>
         <img src={paths.ImageFile(params.snowflake)} alt="" class="max-w-2xl" />
         {#if imageMetadata.commentary || imageMetadata.commentary_translation}
             <div class="bg-gray-200 p-4 m-4">
@@ -130,9 +152,12 @@
             value={imageMetadata.commentary_translation}
         />
         <button
-            on:click|preventDefault={() => {
-                updateImageMetadata(params.snowflake, serializeForm(form));
-                getImageMetadata(params.snowflake);
+            on:click|preventDefault={async () => {
+                await updateImageMetadata(
+                    params.snowflake,
+                    serializeForm(form)
+                );
+                getImageMetadataHooks(params.snowflake);
                 edit = false;
             }}>Submit</button
         >
